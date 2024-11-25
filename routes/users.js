@@ -3,7 +3,7 @@ const router = express.Router();
 const { createUser, getUser, getAllUsers, updateUser, deleteUser, validateUser } = require('../database');
 
 router.post('/users', (req, res) => {
-    const user = req.body.user;
+    const user = req.body.user; 
     const password = req.body.password;
     try {
         createUser(user, password);
@@ -29,8 +29,9 @@ router.get('/users/:user', (req, res) => {
 });
 
 router.put('/users/:user', (req, res) => {
-    const user = req.params.user;
-    const password = req.body.password;
+    const user = req.params.user; //Parametros en la url para acceder al usuario que queremos
+    //const new_user = req.body.user;
+    const password = req.body.password; //Accedemos a la propiedad password de un usuario, para poder cambiarla
     try {
         updateUser(user, password);
         res.status(200).send('Usuario actualizado');
