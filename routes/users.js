@@ -54,12 +54,41 @@ router.post('/login', (req, res) => {
     const user = req.body.user;
     const password = req.body.password;
     const userObj = getUser(user);
+
     if (userObj && validateUser(user, password)) {
-        res.cookie('user', user);
+        // Guardamos el nombre del usuario en la sesión
+        req.session.user = user;
         res.status(200).send('Login correcto');
     } else {
         res.status(401).send('Login incorrecto');
     }
+});
+
+
+//Middleware
+function isAuthenticated(req, res, next){
+    if (req.session.user) {
+        next();
+    } else {
+        res.status(401).send('Usuario no autenticado')
+    }
+};
+
+
+// Ruta para verificar si el usuario está autenticado
+router.get('/profile', isAuthenticated, (req, res) => {
+    if (req.session.user) {
+        // El usuario está autenticado
+        res.status(200).send(`Bienvenido ${req.session.user}`);
+    } else {
+        // El usuario no está autenticado
+        res.status(401).send('No estás autenticado');
+    }
+})
+
+router.post('/logout', (req, res) => {
+    req.session.destroy();
+    res.status(200).send('Logout correcto')
 });
 
 module.exports = router;
