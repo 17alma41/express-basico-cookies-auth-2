@@ -41,3 +41,6 @@ CMD [ "node", "server.js" ]
 
 # Borrar servidor
 # docker rm container-ID
+
+# Levantar servidor una vez ya creado en DockerHub
+# docker run -p 3000:3000 17alma41/container-example
